@@ -1,18 +1,17 @@
-version: '3.8'
-
 services:
   cadvisor:
-    image: gcr.io/cadvisor/cadvisor:v0.47.0 # Versão estável
+    image: gcr.io/cadvisor/cadvisor:v0.49.1 # Versão mais atualizada
     container_name: cadvisor
-    ports:
-      - "8080:8080"
+    privileged: true
+    devices:
+      - /dev/kmsg
     volumes:
       - /:/rootfs:ro
-      - /var/run:/var/run:rw # Necessário para ler o socket do Docker
+      - /var/run:/var/run:rw
       - /sys:/sys:ro
       - /var/lib/docker/:/var/lib/docker:ro
       - /dev/disk/:/dev/disk:ro
-    devices:
-      - /dev/kmsg
-    privileged: true
-    restart: unless-stopped
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    command:
+      - '--docker_only=true' # Força o foco apenas em containers docker
+      - '--housekeeping_interval=10s'
