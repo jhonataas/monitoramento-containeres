@@ -20,5 +20,5 @@ services:
     command:
       - '--docker_only=true'
       - '--housekeeping_interval=10s'
-      - '--port=80801'
+      - '--port=8081'
     restart: unless-stopped
